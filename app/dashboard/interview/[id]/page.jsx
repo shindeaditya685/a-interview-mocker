@@ -16,6 +16,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 const Interview = ({ params }) => {
   const { user, isLoaded } = useUser();
@@ -168,9 +169,11 @@ const Interview = ({ params }) => {
           </Card>
 
           <div className="flex justify-end">
-            <Button className="px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:to-purple-700">
-              Start Interview
-            </Button>
+            <Link href={`/dashboard/interview/${params?.id}/start`}>
+              <Button className="px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-primary to-purple-600 hover:from-primary hover:to-purple-700">
+                Start Interview
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
