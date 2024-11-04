@@ -5,11 +5,15 @@ import { db } from "@/utils/db";
 import { MockInterview } from "@/utils/schema";
 import { and, eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
+import QuestionSection from "@/components/_components/QuestionsSection";
+import RecordAnswerSection from "@/components/_components/RecordAnswerSection";
 
 const StartInterview = ({ params }) => {
   const { user, isLoaded } = useUser();
   const [interviewData, setInterviewData] = useState(null);
   const [mockInterviewQuestion, setMockInterviewQuestion] = useState(null);
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+
   useEffect(() => {
     if (isLoaded && user?.primaryEmailAddress?.emailAddress) {
       getInterviewDetails();
@@ -64,11 +68,15 @@ const StartInterview = ({ params }) => {
   }
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Questions */}
-        <div></div>
+        <QuestionSection
+          mockInterviewQuestion={mockInterviewQuestion}
+          activeQuestionIndex={activeQuestionIndex}
+          setActiveQuestionIndex={setActiveQuestionIndex}
+        />
         {/* Video/ Audio Recording */}
-        <div></div>
+        <RecordAnswerSection />
       </div>
     </div>
   );
