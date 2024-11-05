@@ -18,7 +18,8 @@ import Webcam from "react-webcam";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 
-const Interview = ({ params }) => {
+const Interview = ({ params: rawParams }) => {
+  const params = React.use(rawParams);
   const { user, isLoaded } = useUser();
   const [interviewData, setInterviewData] = useState(null);
   const [webCamEnabled, setWebCamEnabled] = useState(false);
