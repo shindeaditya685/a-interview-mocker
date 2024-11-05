@@ -103,6 +103,7 @@ const RecordAnswerSection = ({
           width={400}
           height={400}
           className="absolute"
+          alt="web cam"
         />
         <Webcam
           mirrored={true}
