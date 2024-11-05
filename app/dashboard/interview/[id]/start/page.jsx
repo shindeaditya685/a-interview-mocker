@@ -8,6 +8,7 @@ import { useUser } from "@clerk/nextjs";
 import QuestionSection from "@/components/_components/QuestionsSection";
 import RecordAnswerSection from "@/components/_components/RecordAnswerSection";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const StartInterview = ({ params }) => {
   const { user, isLoaded } = useUser();
@@ -98,7 +99,9 @@ const StartInterview = ({ params }) => {
           </Button>
         )}
         {activeQuestionIndex === mockInterviewQuestion?.length - 1 && (
-          <Button>End Interview</Button>
+          <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
+            <Button>End Interview</Button>
+          </Link>
         )}
       </div>
     </div>
