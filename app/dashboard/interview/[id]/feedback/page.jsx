@@ -5,8 +5,10 @@ import { UserAnswer } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
 import { eq, and } from "drizzle-orm";
 import React, { useEffect, useState } from "react";
-import { AlertCircle, Award, CheckCircle, XCircle } from "lucide-react";
+import { AlertCircle, Award, CheckCircle, XCircle, Home } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Feedback = ({ params: rawParams }) => {
   const params = React.use(rawParams);
@@ -40,7 +42,6 @@ const Feedback = ({ params: rawParams }) => {
 
   const calculateOverallRating = () => {
     if (!feedbackData || feedbackData.length === 0) return 0;
-    // Simple sum of ratings divided by number of questions
     const sum = feedbackData.reduce(
       (total, item) => total + (item.rating || 0),
       0
@@ -83,87 +84,100 @@ const Feedback = ({ params: rawParams }) => {
   const overallRating = calculateOverallRating();
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <div className="text-center mb-8">
-        <Award className="w-16 h-16 text-primary mx-auto mb-4" />
-        <h2 className="text-3xl font-bold text-green-500 mb-2">
-          Congratulations!
-        </h2>
-        <p className="text-gray-600 text-lg">
-          Your Interview Performance Review
-        </p>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="mb-6">
+        <Link href="/dashboard">
+          <Button variant="outline" className="flex items-center gap-2">
+            <Home className="w-4 h-4" />
+            Back to Home
+          </Button>
+        </Link>
       </div>
 
-      <Card className="bg-gradient-to-r from-primary/10 to-primary/5 p-6">
-        <div className="text-center">
-          <h3 className="text-2xl font-bold mb-2">Overall Performance</h3>
-          <div
-            className={`text-4xl font-bold ${getRatingColor(overallRating)}`}
-          >
-            {overallRating}/10
-          </div>
-          <p className="text-sm text-gray-600 mt-2">
-            Based on {feedbackData?.length || 0} questions
+      <div className="space-y-8">
+        <div className="text-center mb-8">
+          <Award className="w-16 h-16 text-primary mx-auto mb-4" />
+          <h2 className="text-3xl font-bold text-green-500 mb-2">
+            Congratulations!
+          </h2>
+          <p className="text-gray-600 text-lg">
+            Your Interview Performance Review
           </p>
         </div>
-      </Card>
 
-      <div className="space-y-6">
-        {feedbackData &&
-          feedbackData.map((feedback, index) => (
-            <Card
-              key={index}
-              className="p-6 hover:shadow-lg transition-shadow duration-200"
+        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 p-6">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold mb-2">Overall Performance</h3>
+            <div
+              className={`text-4xl font-bold ${getRatingColor(overallRating)}`}
             >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">
-                    Question {index + 1}
-                  </h3>
-                  <span
-                    className={`text-lg font-bold ${getRatingColor(
-                      feedback.rating
-                    )}`}
-                  >
-                    {feedback.rating}/10
-                  </span>
-                </div>
+              {overallRating}/10
+            </div>
+            <p className="text-sm text-gray-600 mt-2">
+              Based on {feedbackData?.length || 0} questions
+            </p>
+          </div>
+        </Card>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <p className="font-medium text-gray-800">
-                    {feedback.question}
-                  </p>
-                </div>
+        <div className="space-y-6">
+          {feedbackData &&
+            feedbackData.map((feedback, index) => (
+              <Card
+                key={index}
+                className="p-6 hover:shadow-lg transition-shadow duration-200"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-semibold">
+                      Question {index + 1}
+                    </h3>
+                    <span
+                      className={`text-lg font-bold ${getRatingColor(
+                        feedback.rating
+                      )}`}
+                    >
+                      {feedback.rating}/10
+                    </span>
+                  </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center text-green-600">
-                      <CheckCircle className="w-5 h-5 mr-2" />
-                      <p className="font-medium">Correct Answer</p>
-                    </div>
-                    <p className="pl-7 text-gray-700">
-                      {feedback.correctAnswer}
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <p className="font-medium text-gray-800">
+                      {feedback.question}
                     </p>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center text-blue-600">
-                      <XCircle className="w-5 h-5 mr-2" />
-                      <p className="font-medium">Your Answer</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center text-green-600">
+                        <CheckCircle className="w-5 h-5 mr-2" />
+                        <p className="font-medium">Correct Answer</p>
+                      </div>
+                      <p className="pl-7 text-gray-700">
+                        {feedback.correctAnswer}
+                      </p>
                     </div>
-                    <p className="pl-7 text-gray-700">{feedback.userAnswer}</p>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center text-blue-600">
+                        <XCircle className="w-5 h-5 mr-2" />
+                        <p className="font-medium">Your Answer</p>
+                      </div>
+                      <p className="pl-7 text-gray-700">
+                        {feedback.userAnswer}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <p className="font-medium text-purple-700 mb-2">
+                      Feedback for Improvement
+                    </p>
+                    <p className="text-gray-700">{feedback.feedback}</p>
                   </div>
                 </div>
-
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <p className="font-medium text-purple-700 mb-2">
-                    Feedback for Improvement
-                  </p>
-                  <p className="text-gray-700">{feedback.feedback}</p>
-                </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))}
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { Button } from "../ui/button";
 import useSpeechToText from "react-hook-speech-to-text";
-import { Mic, Camera, Radio } from "lucide-react";
+import { Mic, Camera, Video, Radio } from "lucide-react";
 import { toast } from "sonner";
 import { chatSession } from "@/utils/GeminiAIModel";
 import { db } from "@/utils/db";

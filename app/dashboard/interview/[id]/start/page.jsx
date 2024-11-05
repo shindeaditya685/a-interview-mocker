@@ -10,7 +10,7 @@ import RecordAnswerSection from "@/components/_components/RecordAnswerSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle } from "lucide-react";
 
 const StartInterview = ({ params: rawParams }) => {
   const params = React.use(rawParams);
@@ -21,6 +21,7 @@ const StartInterview = ({ params: rawParams }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // ... keeping existing useEffect and functions ...
   useEffect(() => {
     if (isLoaded && user?.primaryEmailAddress?.emailAddress && params.id) {
       getInterviewDetails();
@@ -58,24 +59,33 @@ const StartInterview = ({ params: rawParams }) => {
 
   if (!isLoaded || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary relative">
+          <div className="absolute inset-0 border-t-2 border-blue-500 rounded-full animate-pulse"></div>
+        </div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-96 text-center">
-          <CardContent className="pt-6">
-            <AlertCircle className="mx-auto h-12 w-12 text-yellow-500 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">
-              Authentication Required
-            </h2>
-            <p className="text-gray-500">
-              Please sign in to view this interview
-            </p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <Card className="w-96 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <CardContent className="pt-8 pb-6">
+            <div className="flex flex-col items-center">
+              <div className="rounded-full bg-yellow-100 p-3 mb-4">
+                <AlertCircle className="h-8 w-8 text-yellow-500" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2 text-slate-800">
+                Authentication Required
+              </h2>
+              <p className="text-slate-600 text-center mb-6">
+                Please sign in to view this interview
+              </p>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Sign In to Continue
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -84,73 +94,103 @@ const StartInterview = ({ params: rawParams }) => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-96 text-center">
-          <CardContent className="pt-6">
-            <AlertCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Error</h2>
-            <p className="text-gray-500">{error}</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <Card className="w-96 shadow-lg">
+          <CardContent className="pt-8 pb-6">
+            <div className="flex flex-col items-center">
+              <div className="rounded-full bg-red-100 p-3 mb-4">
+                <AlertCircle className="h-8 w-8 text-red-500" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2 text-slate-800">Error</h2>
+              <p className="text-slate-600 text-center mb-6">{error}</p>
+              <Button
+                variant="outline"
+                onClick={() => window.location.reload()}
+                className="w-full border-2 hover:bg-slate-50"
+              >
+                Try Again
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  if (!mockInterviewQuestion || mockInterviewQuestion.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-96 text-center">
-          <CardContent className="pt-6">
-            <AlertCircle className="mx-auto h-12 w-12 text-yellow-500 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">No Questions Found</h2>
-            <p className="text-gray-500">
-              This interview doesn't have any questions yet.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const progress =
+    ((activeQuestionIndex + 1) / mockInterviewQuestion.length) * 100;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <QuestionSection
-          mockInterviewQuestion={mockInterviewQuestion}
-          activeQuestionIndex={activeQuestionIndex}
-        />
-        <RecordAnswerSection
-          mockInterviewQuestion={mockInterviewQuestion}
-          activeQuestionIndex={activeQuestionIndex}
-          interviewData={interviewData}
-        />
-      </div>
-      <div className="flex justify-end gap-6 my-10">
-        {activeQuestionIndex > 0 && (
-          <Button
-            variant="outline"
-            onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
-          >
-            Previous Question
-          </Button>
-        )}
-        {activeQuestionIndex < mockInterviewQuestion.length - 1 && (
-          <Button
-            onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
-          >
-            Next Question
-          </Button>
-        )}
-        {activeQuestionIndex === mockInterviewQuestion.length - 1 && (
-          <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Progress Bar */}
+        <div className="mb-8 bg-white rounded-lg p-4 shadow-sm">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-slate-600">
+              Question {activeQuestionIndex + 1} of{" "}
+              {mockInterviewQuestion.length}
+            </span>
+            <span className="text-sm font-medium text-slate-600">
+              {progress.toFixed(0)}% Complete
+            </span>
+          </div>
+          <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div
+              className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="transition-all duration-300 ease-in-out">
+            <QuestionSection
+              mockInterviewQuestion={mockInterviewQuestion}
+              activeQuestionIndex={activeQuestionIndex}
+            />
+          </div>
+          <div className="transition-all duration-300 ease-in-out">
+            <RecordAnswerSection
+              mockInterviewQuestion={mockInterviewQuestion}
+              activeQuestionIndex={activeQuestionIndex}
+              interviewData={interviewData}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-between mt-8 px-4">
+          {activeQuestionIndex > 0 ? (
             <Button
-              variant="default"
-              className="bg-green-500 hover:bg-green-600"
+              variant="outline"
+              onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
+              className="flex items-center gap-2 border-2 hover:bg-slate-50"
             >
-              End Interview
+              <ArrowLeft className="h-4 w-4" />
+              Previous Question
             </Button>
-          </Link>
-        )}
+          ) : (
+            <div></div>
+          )}
+
+          {activeQuestionIndex < mockInterviewQuestion.length - 1 ? (
+            <Button
+              onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
+            >
+              Next Question
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Link
+              href={`/dashboard/interview/${interviewData?.mockId}/feedback`}
+            >
+              <Button className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2">
+                <CheckCircle className="h-4 w-4" />
+                Complete Interview
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
