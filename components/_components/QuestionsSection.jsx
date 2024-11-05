@@ -3,11 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Lightbulb, Volume2, VolumeX } from "lucide-react";
 
-const QuestionSection = ({
-  mockInterviewQuestion,
-  activeQuestionIndex,
-  setActiveQuestionIndex,
-}) => {
+const QuestionSection = ({ mockInterviewQuestion, activeQuestionIndex }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [availableVoices, setAvailableVoices] = useState([]);
@@ -89,7 +85,6 @@ const QuestionSection = ({
                   : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
               }
             `}
-            onClick={() => setActiveQuestionIndex(index)}
           >
             Question #{index + 1}
           </h2>

@@ -125,8 +125,6 @@ const RecordAnswerSection = ({
           "Record Answer"
         )}
       </Button>
-
-      <Button onClick={() => console.log(userAnswer)}>Show User Answer</Button>
     </div>
   );
 };

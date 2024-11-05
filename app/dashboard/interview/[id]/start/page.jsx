@@ -7,6 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
 import QuestionSection from "@/components/_components/QuestionsSection";
 import RecordAnswerSection from "@/components/_components/RecordAnswerSection";
+import { Button } from "@/components/ui/button";
 
 const StartInterview = ({ params }) => {
   const { user, isLoaded } = useUser();
@@ -73,7 +74,6 @@ const StartInterview = ({ params }) => {
         <QuestionSection
           mockInterviewQuestion={mockInterviewQuestion}
           activeQuestionIndex={activeQuestionIndex}
-          setActiveQuestionIndex={setActiveQuestionIndex}
         />
         {/* Video/ Audio Recording */}
         <RecordAnswerSection
@@ -81,6 +81,25 @@ const StartInterview = ({ params }) => {
           activeQuestionIndex={activeQuestionIndex}
           interviewData={interviewData}
         />
+      </div>
+      <div className="flex justify-end gap-6 mb-10">
+        {activeQuestionIndex > 0 && (
+          <Button
+            onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
+          >
+            Previous Question
+          </Button>
+        )}
+        {activeQuestionIndex !== mockInterviewQuestion?.length - 1 && (
+          <Button
+            onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
+          >
+            Next Question
+          </Button>
+        )}
+        {activeQuestionIndex === mockInterviewQuestion?.length - 1 && (
+          <Button>End Interview</Button>
+        )}
       </div>
     </div>
   );
