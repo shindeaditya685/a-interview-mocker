@@ -41,7 +41,7 @@ const RecordAnswerSection = ({
   }, [results]);
 
   useEffect(() => {
-    if (!isRecording && userAnswer.length > 10) {
+    if (!isRecording && userAnswer && userAnswer.length > 10) {
       updateUserAnswer();
     }
   }, [userAnswer]);
@@ -49,7 +49,7 @@ const RecordAnswerSection = ({
   const startRecording = async () => {
     if (isRecording) {
       stopSpeechToText();
-      if (userAnswer?.length < 10) {
+      if (userAnswer && userAnswer?.length < 10) {
         setLoading(false);
         toast("Error while saving your answer, Please record again!");
         return;
