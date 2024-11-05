@@ -1,5 +1,6 @@
 import React from "react";
 import AddNewInterview from "@/components/_components/AddNewInterview";
+import InterviewList from "@/components/_components/InterviewList";
 
 const Dashboard = () => {
   return (
@@ -11,6 +12,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 my-5">
         <AddNewInterview />
       </div>
+      <InterviewList />
     </div>
   );
 };

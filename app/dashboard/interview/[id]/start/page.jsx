@@ -21,7 +21,6 @@ const StartInterview = ({ params: rawParams }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ... keeping existing useEffect and functions ...
   useEffect(() => {
     if (isLoaded && user?.primaryEmailAddress?.emailAddress && params.id) {
       getInterviewDetails();
