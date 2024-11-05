@@ -1,3 +1,5 @@
+"use client";
+
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
 import React from "react";
@@ -41,9 +43,7 @@ const SignInPage = () => {
             </div>
 
             <SignUp
-              path="/sign-up"
-              routing="path"
-              signInUrl="/sign-in"
+              afterSignOutUrl="/sign-in"
               className="rounded-lg shadow-lg bg-white p-8 lg:p-10"
             />
           </div>

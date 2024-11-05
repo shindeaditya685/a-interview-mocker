@@ -1,3 +1,5 @@
+"use client";
+
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
 import React from "react";
@@ -18,8 +20,6 @@ const SignUpPage = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
 
           <div className="relative z-10 hidden lg:block lg:p-12">
-            
-
             <h2 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">
               Welcome to AI Interview Mocker 🤖
             </h2>
@@ -43,9 +43,7 @@ const SignUpPage = () => {
             </div>
 
             <SignUp
-              path="/sign-up"
-              routing="path"
-              signInUrl="/sign-in"
+              afterSignOutUrl="/sign-in"
               className="rounded-lg shadow-lg bg-white p-8 lg:p-10"
             />
           </div>

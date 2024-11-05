@@ -7,6 +7,7 @@ import { eq, desc } from "drizzle-orm";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import InterviewItemCard from "./InterviewItemCard";
+import { AlertCircle } from "lucide-react";
 
 const InterviewList = () => {
   const { user, isLoaded } = useUser();
